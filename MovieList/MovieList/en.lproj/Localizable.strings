@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  MovieList
+
+  Created by Vivatum on 15/05/2020.
+  Copyright © 2020 com.vivatum. All rights reserved.
+*/
+
+// MARK: - Alerts
+
+"allert.button.ok" = "OK";
+
+"error.network.title" = "Network Error";
+"error.network.message" = "Check Internet connection please.";
+
+"error.fetching.data.title" = "Fetching Data Error";
+"error.fetching.data.message" = "Please try again later.";
+
+
+// MARK: - No Data Messages
+
+"data.no.fetched" = "We couldn't fetch any Data now. \nTry again later please.";
+"data.loading" = "Loading...";
