@@ -21,6 +21,16 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        if let url = URLFactory.moviePlayNowRequestURL(1) {
+//            MovieFetchService.shared.fetchMovieList(by: url) { result in
+//                switch result {
+//                case .success(let list):
+//                    print(list.results.first!)
+//                case .failure(let action):
+//                    print(action.localizedDescription)
+//                }
+//            }
+//        }
         
     }
     

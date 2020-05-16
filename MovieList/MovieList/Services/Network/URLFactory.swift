@@ -11,14 +11,10 @@ import Foundation
 struct URLFactory {
     
     enum URLComponent: String {
-        
         case apiKey = "?api_key=40bdbf8af85f8fea90999afee97574c4"
-        
         case moviePlayNow = "https://api.themoviedb.org/3/movie/now_playing"
         case requestPage = "&page="
-        
         case moviePoster = "https://image.tmdb.org/t/p/w500/"
-        
         case search = "https://api.themoviedb.org/3/search/movie"
         case searchQuery = "&query="
     }

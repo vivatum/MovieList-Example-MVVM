@@ -16,7 +16,6 @@ struct Movie {
     let releaseDate: Date
     let overview: String
     let vote: Double
-    var favorited: Bool
 }
 
 extension Movie: Decodable {
@@ -47,9 +46,6 @@ extension Movie: Decodable {
             DDLogError(errorMessage)
             throw DecodingError.dataCorrupted(errorContext)
         }
-        
-        // TODO Realm???
-        favorited = false
     }
 }
 
