@@ -134,7 +134,7 @@
 				5AC35CA3246F2886007FF701 /* CustomViews */,
 				5A963C09246F31B4009AAC02 /* ViewModels */,
 				5AC35CA4246F288F007FF701 /* Services */,
-				5A963C08246F3189009AAC02 /* Entities */,
+				5A963C08246F3189009AAC02 /* Model */,
 				5AC35CA2246F286D007FF701 /* Utils */,
 				5AC35CA1246F283D007FF701 /* Storyboards */,
 				5A2C3EE7246F20C900F1983E /* Assets.xcassets */,
@@ -144,7 +144,7 @@
 			path = MovieList;
 			sourceTree = "<group>";
 		};
-		5A963C08246F3189009AAC02 /* Entities */ = {
+		5A963C08246F3189009AAC02 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				5A2FDC2F247001240010AE1F /* Movie.swift */,
@@ -152,7 +152,7 @@
 				5A2FDC3D247014D80010AE1F /* FavoriteMovie.swift */,
 				5A2FDC3524700E770010AE1F /* Dynamic.swift */,
 			);
-			path = Entities;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		5A963C09246F31B4009AAC02 /* ViewModels */ = {

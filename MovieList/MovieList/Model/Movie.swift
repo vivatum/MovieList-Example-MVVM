@@ -9,16 +9,26 @@
 import Foundation
 import CocoaLumberjack
 
-struct Movie {
+protocol MovieFavoriteDelegate: class {
+    func favoriteStatusUpdated()
+}
+
+final class Movie: Decodable {
+    
     let id: Int
     let title: String
     let posterPath: String
     let releaseDate: Date
     let overview: String
     let vote: Double
-}
-
-extension Movie: Decodable {
+    
+    var favorite: Bool = false {
+        didSet {
+            self.delegate?.favoriteStatusUpdated()
+        }
+    }
+    
+    weak var delegate: MovieFavoriteDelegate?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -30,6 +40,7 @@ extension Movie: Decodable {
     }
     
     init(from decoder: Decoder) throws {
+        
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
         title = try values.decode(String.self, forKey: .title)
@@ -46,6 +57,24 @@ extension Movie: Decodable {
             DDLogError(errorMessage)
             throw DecodingError.dataCorrupted(errorContext)
         }
+        
+        self.checkFavoriteStatus()
+    }
+    
+    
+    private func checkFavoriteStatus() {
+        FavoritesMovieService.shared.isMovieFavorite(id) { [weak self] result in
+            switch result {
+            case .success(let status):
+                self?.favorite = status
+            case .failure(let error):
+                DDLogError(error.localizedDescription)
+            }
+        }
+    }
+    
+    public func changeFavoriteStatus() {
+        FavoritesMovieService.shared.updateFavoriteStatus(for: self.id)
+        self.favorite.toggle()
     }
 }
-
