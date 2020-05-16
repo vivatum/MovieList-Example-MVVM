@@ -38,6 +38,7 @@ final class MovieTableViewCell: UITableViewCell {
     // MARK: - Cell content
     
     private func setupCell() {
+        // TODO: roundCorners??
         self.posterImageView.roundCorners(10)
         self.titleLabel.textColor = AppColorScheme.movieTitle
         self.subtitleLabel.textColor = AppColorScheme.movieSubtitle

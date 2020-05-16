@@ -74,7 +74,13 @@ final class Movie: Decodable {
     }
     
     public func changeFavoriteStatus() {
-        FavoritesMovieService.shared.updateFavoriteStatus(for: self.id)
-        self.favorite.toggle()
+        FavoritesMovieService.shared.updateFavoriteStatus(for: self.id) { [weak self] result in
+            switch result {
+            case .success(let status):
+                self?.favorite = status
+            case .failure(let error):
+                DDLogError(error.localizedDescription)
+            }
+        }
     }
 }
