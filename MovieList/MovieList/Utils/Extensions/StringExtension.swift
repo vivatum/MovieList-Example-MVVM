@@ -26,5 +26,22 @@ extension String {
     }
     
     
+    // MARK: - Search Query
+    
+    var searchQuery: String {
+        let plus = "+"
+        let space = " "
+        let trimmed = self.trimmingCharacters(in: .whitespacesAndNewlines)
+        let replacedSpaces = trimmed.replacingOccurrences(of: space, with: plus)
+        return replacedSpaces
+    }
+    
+    // MARK: - To Date
+    
+    func toDate(_ format: DateFormatString) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format.rawValue
+        return dateFormatter.date(from: self)
+    }
 }
 

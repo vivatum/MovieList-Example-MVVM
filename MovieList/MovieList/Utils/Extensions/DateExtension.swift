@@ -8,14 +8,9 @@
 
 import Foundation
 
-enum FormatForStringDate: String {
-    case fullDate = "dd MMM yyyy"
-    case yearDate = "yyyy"
-}
-
 extension Date {
     
-    func toString(format: FormatForStringDate) -> String {
+    func toString(format: DateFormatString) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
         dateFormatter.locale = NSLocale.current
