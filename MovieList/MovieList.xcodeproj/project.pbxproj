@@ -40,6 +40,8 @@
 		5AC35CB4246F2A25007FF701 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC35CB3246F2A25007FF701 /* DateExtension.swift */; };
 		5AC35CB7246F2C06007FF701 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AC35CB9246F2C06007FF701 /* Localizable.strings */; };
 		5AC35CBB246F2D1E007FF701 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC35CBA246F2D1E007FF701 /* StringExtension.swift */; };
+		5AFD0ED924706D9D00D87350 /* MovieListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFD0ED824706D9D00D87350 /* MovieListDataSource.swift */; };
+		5AFD0EDB24706F1F00D87350 /* MovieListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFD0EDA24706F1F00D87350 /* MovieListViewModel.swift */; };
 		6C67DFED3CB3AC3E000EFE1D /* Pods_MovieList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC58C70EF9A832FCC915625 /* Pods_MovieList.framework */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +82,8 @@
 		5AC35CB3246F2A25007FF701 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		5AC35CB8246F2C06007FF701 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AC35CBA246F2D1E007FF701 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		5AFD0ED824706D9D00D87350 /* MovieListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListDataSource.swift; sourceTree = "<group>"; };
+		5AFD0EDA24706F1F00D87350 /* MovieListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewModel.swift; sourceTree = "<group>"; };
 		7DC58C70EF9A832FCC915625 /* Pods_MovieList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D313D2D1F0F14334A4DA053B /* Pods-MovieList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieList.debug.xcconfig"; path = "Target Support Files/Pods-MovieList/Pods-MovieList.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -154,6 +158,8 @@
 		5A963C09246F31B4009AAC02 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				5AFD0ED824706D9D00D87350 /* MovieListDataSource.swift */,
+				5AFD0EDA24706F1F00D87350 /* MovieListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -405,6 +411,7 @@
 				5A2FDC3E247014D80010AE1F /* FavoriteMovie.swift in Sources */,
 				5A2AE93124705C54007AF36C /* UIViewExtension.swift in Sources */,
 				5AC35CAE246F2953007FF701 /* AlertMessage.swift in Sources */,
+				5AFD0ED924706D9D00D87350 /* MovieListDataSource.swift in Sources */,
 				5A2FDC3424700DB50010AE1F /* ImageLoader.swift in Sources */,
 				5AC35CB2246F29B0007FF701 /* UIApplicationExtension.swift in Sources */,
 				5A2FDC322470080D0010AE1F /* DateFormatString.swift in Sources */,
@@ -413,6 +420,7 @@
 				5AC35CA7246F28BD007FF701 /* LogFormatter.swift in Sources */,
 				5A2FDC3824700EA30010AE1F /* MovieFetchService.swift in Sources */,
 				5A963C14246F357D009AAC02 /* MovieTableViewCell.swift in Sources */,
+				5AFD0EDB24706F1F00D87350 /* MovieListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

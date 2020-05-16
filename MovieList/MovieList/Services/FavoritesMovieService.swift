@@ -27,8 +27,8 @@ final class FavoritesMovieService: FavoritesMovieProtocol {
                     let realm = try Realm()
                     if let _favorite = realm.object(ofType: FavoriteMovie.self, forPrimaryKey: movieId) {
                         try realm.write {
+                            DDLogInfo("Realm: deleting Favorite id \(_favorite.id)")
                             realm.delete(_favorite)
-                            DDLogInfo("Realm: Favorite id \(_favorite.id) removed")
                         }
                     }
                     else {
@@ -91,15 +91,13 @@ final class FavoritesMovieService: FavoritesMovieProtocol {
                 do {
                     let realm = try Realm()
                     if let _ = realm.object(ofType: FavoriteMovie.self, forPrimaryKey: movieId) {
-                        DDLogInfo("Realm: Movie id \(movieId) is not favorited")
                         closure(.success(true))
                     } else {
-                        DDLogInfo("Realm: Movie id \(movieId) is NOT favorited")
                         closure(.success(false))
                     }
                 }
                 catch let error {
-                    let errorMessage = "Realm: Can't info about Favorite id \(movieId): \(error.localizedDescription)"
+                    let errorMessage = "Realm: Can't get info about Favorite id \(movieId): \(error.localizedDescription)"
                     DDLogError(errorMessage)
                     closure(.failure(ActionError.dataBase(errorMessage)))
                 }

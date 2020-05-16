@@ -17,6 +17,8 @@ final class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var favoriteButton: UIButton!
     
+    private var isFavorite = false
+    
     var movieData: Movie? {
         didSet {
             populateCellContent()
@@ -25,10 +27,8 @@ final class MovieTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.setupCell()
     }
-    
     
     // MARK: - Favorite Status Action
     
@@ -36,6 +36,8 @@ final class MovieTableViewCell: UITableViewCell {
         DDLogInfo("Favorite button pressed")
         guard let movie = self.movieData else { return }
         FavoritesMovieService.shared.updateFavoriteStatus(for: movie.id)
+        self.isFavorite.toggle()
+        self.updateFavoriteButton()
     }
     
     // MARK: - Cell content
@@ -44,7 +46,8 @@ final class MovieTableViewCell: UITableViewCell {
         self.posterImageView.roundCorners(10)
         self.titleLabel.textColor = AppColorScheme.movieTitle
         self.subtitleLabel.textColor = AppColorScheme.movieSubtitle
-        self.updateFavoriteButton(with: false)
+        self.isFavorite = false
+        self.updateFavoriteButton()
         
         if let placeholderImage = UIImage(named: "posterPlaceholder") {
             self.posterImageView?.image = placeholderImage
@@ -56,7 +59,7 @@ final class MovieTableViewCell: UITableViewCell {
         self.titleLabel.text = movie.title
         self.subtitleLabel.text = movie.releaseDate.toString(format: .yearDate)
         self.populatePosterImage(with: movie.posterPath)
-        self.checkFavoriteStatus(for: movie.id)
+        self.checkFavoriteStatus()
     }
     
     private func populatePosterImage(with path: String) {
@@ -78,8 +81,8 @@ final class MovieTableViewCell: UITableViewCell {
         }
     }
     
-    private func updateFavoriteButton(with status: Bool) {
-        let buttonImage: UIImage? = status ? UIImage(named: "starFavorited") : UIImage(named: "star")
+    private func updateFavoriteButton() {
+        let buttonImage: UIImage? = self.isFavorite ? UIImage(named: "starFavorited") : UIImage(named: "star")
         if let image = buttonImage {
             DispatchQueue.main.async {
                 self.favoriteButton.setImage(image, for: .normal)
@@ -87,11 +90,13 @@ final class MovieTableViewCell: UITableViewCell {
         }
     }
     
-    public func checkFavoriteStatus(for movieId: Int) {
-        FavoritesMovieService.shared.isMovieFavorite(movieId) { result in
+    private func checkFavoriteStatus() {
+        guard let movie = self.movieData else { return }
+        FavoritesMovieService.shared.isMovieFavorite(movie.id) { result in
             switch result {
             case .success(let status):
-                self.updateFavoriteButton(with: status)
+                self.isFavorite = status
+                self.updateFavoriteButton()
             case .failure(let error):
                 DDLogError(error.localizedDescription)
             }

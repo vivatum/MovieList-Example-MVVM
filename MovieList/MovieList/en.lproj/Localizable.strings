@@ -21,3 +21,8 @@
 
 "data.no.fetched" = "We couldn't fetch any Data now. \nTry again later please.";
 "data.loading" = "Loading...";
+
+
+// MARK: - ViewController Titles
+
+"movie.list.playing.now" = "Playing now";
