@@ -25,13 +25,18 @@ final class MovieListViewModel: NSObject {
     private var playingNowList = MovieList()
     private var searchResultsList = MovieList()
     
+    private var searchText: String = "" {
+        didSet {
+            self.searchResultsList = MovieList()
+            self.searchMovie()
+        }
+    }
     
     enum ViewState {
         case playingNow
         case searchResults
     }
     
-    // TODO: did set
     var currentState: ViewState = .playingNow {
         didSet {
             self.dataSource?.data = self.currentList.results
@@ -65,7 +70,16 @@ final class MovieListViewModel: NSObject {
     
     // MARK: - Load Movie list
     
-    public func updateMovieList() {
+    public func fetchMovieList() {
+        switch self.currentState {
+        case .playingNow:
+            self.updateMovieList()
+        case .searchResults:
+            self.searchMovie()
+        }
+    }
+    
+    private func updateMovieList() {
         
         guard let service = self.movieService else {
             let errorMessage = "Missing Movie service"
@@ -114,7 +128,9 @@ final class MovieListViewModel: NSObject {
     
     // MARK: - Search Movie
     
-    public func searchMovie(_ searchText: String) {
+    private func searchMovie() {
+        
+        guard !self.searchText.isEmpty else { return }
         
         guard let service = self.movieService else {
             let errorMessage = "Missing Movie service"
@@ -123,30 +139,29 @@ final class MovieListViewModel: NSObject {
             return
         }
         
-//        guard currentList.page < currentList.totalPages else {
-//            DDLogInfo("No more results for current list")
-//            return
-//        }
+        guard currentList.page < currentList.totalPages else {
+            DDLogInfo("No more results for current list")
+            return
+        }
         
-//        let requestPage = currentList.page + 1
+        let requestPage = currentList.page + 1
         
-        guard let requestUrl = URLFactory.searchRequestURL(searchText) else {
+        guard let requestUrl = URLFactory.searchRequestURLWithPage(searchText, requestPage) else {
             let errorMessage = "Can't get request URL"
             DDLogError(errorMessage)
             self.delegate?.errorHandling(.custom(errorMessage))
             return
         }
-        
-        print("request ###: \(requestUrl)")
-        
+                
         service.fetchMovieList(by: requestUrl) { result in
             switch result {
             case .success(let movieList):
                 
                 self.currentList.page = movieList.page
                 self.currentList.totalPages = movieList.totalPages
-                self.currentList.results = movieList.results
+                self.currentList.results.append(contentsOf: movieList.results)
                 
+                print("### SEARCH page: \(self.currentList.page)")
                 print("### SEARCH pages: \(self.currentList.totalPages)")
                 
                 self.dataSource?.data = self.currentList.results
@@ -154,8 +169,7 @@ final class MovieListViewModel: NSObject {
                 DDLogInfo("Movie List updated")
                 
             case .failure(let error):
-                DDLogInfo("#### SEARCH errror: \(error)")
-//                self.delegate?.errorHandling(error)
+                DDLogInfo("SEARCH errror: \(error)")
             }
         }
     }
@@ -164,10 +178,9 @@ final class MovieListViewModel: NSObject {
 extension MovieListViewModel: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-//        print("Searching with: " + (searchController.searchBar.text ?? ""))
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
         print("### Search text: \(text)")
-        self.searchMovie(text)
+        self.searchText = text
     }
 }
 
@@ -198,6 +211,7 @@ extension MovieListViewModel: UISearchControllerDelegate {
         print("### Cancel")
         
         self.searchResultsList = MovieList()
+        self.searchText = ""
         self.currentState = .playingNow
         
         DispatchQueue.main.async {

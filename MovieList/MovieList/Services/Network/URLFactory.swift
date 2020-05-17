@@ -36,11 +36,13 @@ struct URLFactory {
         return URL(string: urlString)
     }
     
-    static func searchRequestURL(_ searchText: String) -> URL? {
+    static func searchRequestURLWithPage(_ searchText: String, _ page: Int) -> URL? {
         let urlString = URLComponent.search.rawValue +
             URLComponent.apiKey.rawValue +
             URLComponent.searchQuery.rawValue +
-            searchText.searchQuery
+            searchText.searchQuery +
+            URLComponent.requestPage.rawValue +
+            String(describing: page)
         
         return URL(string: urlString)
     }

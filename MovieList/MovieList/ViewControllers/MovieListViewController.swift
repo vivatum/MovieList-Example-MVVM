@@ -12,7 +12,7 @@ import CocoaLumberjack
 final class MovieListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    private let activityIndicator = UIActivityIndicatorView()
+//    private let activityIndicator = UIActivityIndicatorView()
     private var noDataView: NoDataView?
     private let navTitle = "movie.list.playing.now".localized
     
@@ -56,12 +56,9 @@ final class MovieListViewController: UIViewController {
         searchController?.obscuresBackgroundDuringPresentation = false
         searchController?.hidesNavigationBarDuringPresentation = false
         searchController?.searchBar.placeholder = "movie.list.search".localized
-//        searchController.isActive = true
         navigationItem.titleView = searchController?.searchBar
         definesPresentationContext = true
-        
     }
-    
     
     
     // MARK: - NoDataView Message
@@ -75,28 +72,28 @@ final class MovieListViewController: UIViewController {
     
     private func updateMoviewCollection() {
         DDLogInfo("Start updating Movie collection")
-        self.showTitleProgress()
+//        self.showTitleProgress()
         self.noDataView?.message = .loading
-        self.viewModel.updateMovieList()
+        self.viewModel.fetchMovieList()
     }
     
     
     // MARK: - Progress Activities
     
-    private func showTitleProgress() {
-        DispatchQueue.main.async {
-            //self.navigationItem.titleView = self.activityIndicator
-            self.activityIndicator.startAnimating()
-        }
-    }
-    
-    private func hideTitleProgress() {
-        DispatchQueue.main.async {
-            self.activityIndicator.stopAnimating()
-            //self.navigationItem.titleView = nil
-            self.title = self.navTitle
-        }
-    }
+//    private func showTitleProgress() {
+//        DispatchQueue.main.async {
+//            //self.navigationItem.titleView = self.activityIndicator
+//            self.activityIndicator.startAnimating()
+//        }
+//    }
+//
+//    private func hideTitleProgress() {
+//        DispatchQueue.main.async {
+//            self.activityIndicator.stopAnimating()
+//            //self.navigationItem.titleView = nil
+//            self.title = self.navTitle
+//        }
+//    }
 }
 
 
@@ -105,7 +102,7 @@ extension MovieListViewController: MovieViewModelDelegate {
     
     func movieListUpdated() {
         DispatchQueue.main.async {
-            self.hideTitleProgress()
+//            self.hideTitleProgress()
             self.tableView.reloadData()
         }
     }
@@ -120,7 +117,7 @@ extension MovieListViewController: MovieViewModelDelegate {
         DDLogError("Error: \(String(describing: error?.localizedDescription))")
         
         DispatchQueue.main.async {
-            self.hideTitleProgress()
+//            self.hideTitleProgress()
             
             if let err = error {
                 DDLogError("ActionError content: \(err)")
@@ -171,7 +168,7 @@ extension MovieListViewController: UITableViewDataSourcePrefetching {
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         if indexPaths.contains(where: isLoadingCell) {
-            self.viewModel.updateMovieList()
+            self.viewModel.fetchMovieList()
         }
     }
     
