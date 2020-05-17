@@ -11,6 +11,7 @@ import CocoaLumberjack
 
 class MovieDetailsViewController: UIViewController {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var posterImageview: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -32,8 +33,9 @@ class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupLabels()
-        populateView()
+        self.title = "details.nav.titile".localized
+        self.setupLabels()
+        self.populateView()
     }
     
     
@@ -45,53 +47,54 @@ class MovieDetailsViewController: UIViewController {
     // MARK: - Setup View
     
     private func setupLabels() {
-        titleLabel.textColor = AppColorScheme.movieTitle
+        self.titleLabel.textColor = AppColorScheme.movieTitle
         
-        ratingTitleLabel.textColor = AppColorScheme.movieTitleLight
-        ratingTitleLabel.text = "rating.title.label".localized
-        releaseTitileLabel.textColor = AppColorScheme.movieTitleLight
-        releaseTitileLabel.text = "release.titile.label".localized
+        self.ratingTitleLabel.textColor = AppColorScheme.movieTitleLight
+        self.ratingTitleLabel.text = "rating.title.label".localized
+        self.releaseTitileLabel.textColor = AppColorScheme.movieTitleLight
+        self.releaseTitileLabel.text = "release.titile.label".localized
         
-        ratingValueLabel.textColor = AppColorScheme.movieSubtitle
-        releaseDateLabel.textColor = AppColorScheme.movieSubtitle
-        overviewTextView.textColor = AppColorScheme.movieSubtitle
+        self.ratingValueLabel.textColor = AppColorScheme.movieSubtitle
+        self.releaseDateLabel.textColor = AppColorScheme.movieSubtitle
+        self.overviewTextView.textColor = AppColorScheme.movieSubtitle
     }
     
     private func setupPosterConstraints() {
         let width = self.view.bounds.width / 3
         let height = width / 3 * 4
-        posterWidthConstraint.constant = width
-        posterHeightConstraint.constant = height
+        self.posterWidthConstraint.constant = width
+        self.posterHeightConstraint.constant = height
     }
     
     // MARK: - Populate View
     
     private func populateView() {
         guard let movie = self.movieData else { return }
+        movie.detailDelegate = self
         
         if let title = movie.title {
             self.titleLabel.text = title
         }
         
-        posterImageview.setupImageByPath(movie.posterPath)
+        self.posterImageview.setupImageByPath(movie.posterPath)
         
         var ratingString = "0.0"
         if let rating = movie.vote {
             ratingString = String(rating)
         }
-        ratingValueLabel.text = ratingString
+        self.ratingValueLabel.text = ratingString
         
         var dateString = ""
         if let date = movie.releaseDate {
             dateString = date.toString(format: .fullDate)
         }
-        releaseDateLabel.text = dateString
+        self.releaseDateLabel.text = dateString
         
         if let overview = movie.overview {
-           overviewTextView.text = overview
+           self.overviewTextView.text = overview
         }
         
-        setupFavoriteButton()
+        self.setupFavoriteButton()
     }
     
     
@@ -113,7 +116,7 @@ class MovieDetailsViewController: UIViewController {
     }
 }
 
-extension MovieDetailsViewController: MovieFavoriteDelegate {
+extension MovieDetailsViewController: MovieDetailDelegate {
     func favoriteStatusUpdated() {
         self.setupFavoriteButton()
     }

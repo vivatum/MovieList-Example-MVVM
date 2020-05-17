@@ -31,7 +31,7 @@
 
 // MARK: - MovieDetails ViewController
 
-"details.nav.titile" = "Movie";
+"details.nav.titile" = "Movie Details";
 "rating.title.label" = "Rating";
 "release.titile.label" = "Release Date";
 

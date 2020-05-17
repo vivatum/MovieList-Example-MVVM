@@ -13,6 +13,10 @@ protocol MovieFavoriteDelegate: class {
     func favoriteStatusUpdated()
 }
 
+protocol MovieDetailDelegate: class {
+    func favoriteStatusUpdated()
+}
+
 final class Movie: Decodable {
     
     let id: Int
@@ -25,10 +29,12 @@ final class Movie: Decodable {
     var favorite: Bool = false {
         didSet {
             self.delegate?.favoriteStatusUpdated()
+            self.detailDelegate?.favoriteStatusUpdated()
         }
     }
     
     weak var delegate: MovieFavoriteDelegate?
+    weak var detailDelegate: MovieDetailDelegate?
     
     enum CodingKeys: String, CodingKey {
         case id
