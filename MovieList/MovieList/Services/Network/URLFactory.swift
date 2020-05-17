@@ -19,17 +19,13 @@ struct URLFactory {
         case searchQuery = "&query="
     }
     
-    
     static func moviePlayNowRequestURL(_ page: Int) -> URL? {
-        
         let urlString = URLComponent.moviePlayNow.rawValue +
             URLComponent.apiKey.rawValue +
             URLComponent.requestPage.rawValue +
             String(describing: page)
-        
         return URL(string: urlString)
     }
-    
     
     static func posterRequestURL(_ imagePath: String) -> URL? {
         let urlString = URLComponent.moviePoster.rawValue + imagePath
@@ -43,7 +39,6 @@ struct URLFactory {
             searchText.searchQuery +
             URLComponent.requestPage.rawValue +
             String(describing: page)
-        
         return URL(string: urlString)
     }
     
