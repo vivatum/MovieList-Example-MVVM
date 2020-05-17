@@ -22,7 +22,7 @@ class MovieListViewController: UIViewController {
     }
     
     let dataSource = MovieListDataSource()
-    lazy var viewModel = MovieListViewModel(dataSource: dataSource)
+    lazy var viewModel = MovieListViewModel(dataSource: dataSource, delegate: self)
 
     
     override func viewDidLoad() {
@@ -30,7 +30,6 @@ class MovieListViewController: UIViewController {
 
         self.title = self.navTitle
         self.setupTableView()
-        self.setupViewModel()
         self.updateMoviewCollection()
     }
     
@@ -41,6 +40,7 @@ class MovieListViewController: UIViewController {
         self.noDataView = NoDataView()
         tableView.dataSource = self.dataSource
         tableView.delegate = self
+        tableView.prefetchDataSource = self
         tableView.backgroundView = self.noDataView
         tableView.tableFooterView = UIView()
     }
@@ -62,50 +62,6 @@ class MovieListViewController: UIViewController {
     }
     
     
-    // MARK: - Setup ViewModel
-    
-    private func setupViewModel() {
-        
-        self.dataSource.data.bindAndFire { [weak self] data in
-            DispatchQueue.main.async {
-                self?.updtateNoDataMessage(data.isEmpty)
-                self?.tableView.reloadData()
-            }
-        }
-        
-        self.viewModel.onErrorHandling = { [weak self] error in
-            DDLogError("Error: \(String(describing: error?.localizedDescription))")
-            
-            DispatchQueue.main.async {
-                self?.hideTitleProgress()
-                
-                if let err = error {
-                    DDLogError("ActionError content: \(err)")
-                    AlertHelper.showErrorAlert(err.alertContent)
-                }
-                
-                if let viewData = self?.dataSource.data.value {
-                    self?.updtateNoDataMessage(viewData.isEmpty)
-                }
-            }
-        }
-        
-        self.viewModel.stopProgress = { [weak self] in
-            DDLogInfo("Hide progress elements")
-            self?.hideTitleProgress()
-        }
-        
-        
-//        self.viewModel.showContactDetails = { [weak self] contact in
-//            DDLogInfo("Show contact details")
-//            self?.hideAllProgressActivities()
-//            DispatchQueue.main.async {
-//                self?.performSegue(withIdentifier: "showDetail", sender: contact)
-//            }
-//        }
-    }
-    
-    
     // MARK: - Progress Activities
     
     private func showTitleProgress() {
@@ -124,6 +80,41 @@ class MovieListViewController: UIViewController {
     }
 }
 
+extension MovieListViewController: MovieViewModelDelegate {
+    
+    func movieListUpdated() {
+        DispatchQueue.main.async {
+            self.hideTitleProgress()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func showMovieDetails(_ movie: Movie) {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: SegueName.movieDetails.rawValue, sender: movie)
+        }
+    }
+    
+    func errorHandling(_ error: ActionError?) {
+        DDLogError("Error: \(String(describing: error?.localizedDescription))")
+        
+        DispatchQueue.main.async {
+            self.hideTitleProgress()
+            
+            if let err = error {
+                DDLogError("ActionError content: \(err)")
+                AlertHelper.showErrorAlert(err.alertContent)
+            }
+            
+            // TODO:
+//            if let viewData = self.dataSource.data.value {
+//                self?.updtateNoDataMessage(viewData.isEmpty)
+//            }
+        }
+    }
+    
+    
+}
 
 extension MovieListViewController: UITableViewDelegate {
     
@@ -132,10 +123,22 @@ extension MovieListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO:
-//        if let indexPath = tableView.indexPathForSelectedRow {
-//            self.viewModel.selectedIndexPath = indexPath
-//        }
+        if let indexPath = tableView.indexPathForSelectedRow {
+            self.viewModel.selectedIndexPath = indexPath
+        }
         self.tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension MovieListViewController: UITableViewDataSourcePrefetching {
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        if indexPaths.contains(where: isLoadingCell) {
+            self.viewModel.updateMovieList()
+        }
+    }
+    
+    private func isLoadingCell(for indexPath: IndexPath) -> Bool {
+        return indexPath.row >= (viewModel.currentList.results.count - 1)
     }
 }

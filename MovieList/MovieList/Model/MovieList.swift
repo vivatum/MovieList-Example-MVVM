@@ -8,13 +8,11 @@
 
 import Foundation
 
-struct MovieList {
-    let results: [Movie]
-    let page: Int
-    let totalPages: Int
-}
-
-extension MovieList: Decodable {
+final class MovieList: Decodable {
+    
+    var results: [Movie]
+    var page: Int
+    var totalPages: Int
     
     enum CodingKeys: String, CodingKey {
         case results
@@ -22,10 +20,18 @@ extension MovieList: Decodable {
         case totalPages = "total_pages"
     }
     
-    init(from decoder: Decoder) throws {
+    init() {
+        results = [Movie]()
+        page = 0
+        totalPages = 1
+    }
+    
+    required convenience init(from decoder: Decoder) throws {
+        self.init()
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        results = try values.decode([Movie].self, forKey: .results)
-        page = try values.decode(Int.self, forKey: .page)
-        totalPages = try values.decode(Int.self, forKey: .totalPages)
+        self.results = try values.decode([Movie].self, forKey: .results)
+        self.page = try values.decode(Int.self, forKey: .page)
+        self.totalPages = try values.decode(Int.self, forKey: .totalPages)
     }
 }
+

@@ -10,22 +10,27 @@ import UIKit
 
 final class MovieListDataSource: NSObject, UITableViewDataSource {
     
-    public var data: Dynamic<[Movie]> = Dynamic([])
+    public var data: [Movie] = []
+    
+    private enum CellIdentifiers {
+      static let movie = "MovieCell"
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.value.count
+        return data.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as? MovieTableViewCell else {
+        // TODO: cell id!!!
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.movie, for: indexPath) as? MovieTableViewCell else {
             return UITableViewCell()
         }
-        cell.movieData = data.value[indexPath.row]
+        cell.movieData = data[indexPath.row]
         return cell
     }
 }

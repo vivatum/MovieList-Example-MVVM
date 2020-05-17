@@ -16,7 +16,7 @@ final class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var favoriteButton: UIButton!
-
+    
     var movieData: Movie? {
         didSet {
             populateCellContent()
@@ -28,6 +28,7 @@ final class MovieTableViewCell: UITableViewCell {
         self.setupCell()
     }
     
+    
     // MARK: - Favorite Status Action
     
     @IBAction func favoriteButtonAction(_ sender: UIButton) {
@@ -38,29 +39,32 @@ final class MovieTableViewCell: UITableViewCell {
     // MARK: - Cell content
     
     private func setupCell() {
-        // TODO: roundCorners??
-        self.posterImageView.roundCorners(10)
         self.titleLabel.textColor = AppColorScheme.movieTitle
         self.subtitleLabel.textColor = AppColorScheme.movieSubtitle
-        
-        if let placeholderImage = UIImage(named: "posterPlaceholder") {
-            self.posterImageView?.image = placeholderImage
-        }
     }
     
     private func populateCellContent() {
         guard let movie = self.movieData else { return }
         movie.delegate = self
         self.titleLabel.text = movie.title
-        self.subtitleLabel.text = movie.releaseDate.toString(format: .yearDate)
+        if let data = movie.releaseDate {
+            self.subtitleLabel.text = data.toString(format: .yearDate)
+        }
         self.populatePosterImage(with: movie.posterPath)
         self.updateFavoriteButton()
     }
     
-    private func populatePosterImage(with path: String) {
+    private func populatePosterImage(with path: String?) {
         
-        guard let url = URLFactory.posterRequestURL(path) else {
+        guard let pathString = path else {
+            DDLogError("Can't get poster Path")
+            self.setupPosterPlaceholder()
+            return
+        }
+        
+        guard let url = URLFactory.posterRequestURL(pathString) else {
             DDLogError("Can't get poster URL")
+            self.setupPosterPlaceholder()
             return
         }
         
@@ -71,7 +75,16 @@ final class MovieTableViewCell: UITableViewCell {
                     self.posterImageView?.image = UIImage(data: data)
                 }
             case .failure(let error):
+                self.setupPosterPlaceholder()
                 DDLogError("Can't get contact image data: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func setupPosterPlaceholder() {
+        DispatchQueue.main.async {
+            if let placeholderImage = UIImage(named: "posterPlaceholder") {
+                self.posterImageView?.image = placeholderImage
             }
         }
     }
@@ -85,7 +98,6 @@ final class MovieTableViewCell: UITableViewCell {
             }
         }
     }
-    
 }
 
 extension MovieTableViewCell: MovieFavoriteDelegate {

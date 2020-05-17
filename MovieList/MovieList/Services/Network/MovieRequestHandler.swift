@@ -12,7 +12,6 @@ import CocoaLumberjack
 class MovieRequestHandler {
     
     func parseMovieData(_ responseData: Data, completion: @escaping (Result<MovieList, ActionError>) -> Void) {
-        
         let decoder = JSONDecoder()
         DispatchQueue.global(qos: .background).async(execute: {
             do {
@@ -20,7 +19,7 @@ class MovieRequestHandler {
                 completion(.success(movieList))
                 DDLogInfo("Movie List parsed successfully")
             } catch {
-                let errorMessage = "Can't parse Movie List: \(error.localizedDescription)"
+                let errorMessage = "Can't parse Movie List: \(error)"
                 DDLogError(errorMessage)
                 completion(.failure(.parser(errorMessage)))
             }

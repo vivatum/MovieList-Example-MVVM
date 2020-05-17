@@ -16,11 +16,11 @@ protocol MovieFavoriteDelegate: class {
 final class Movie: Decodable {
     
     let id: Int
-    let title: String
-    let posterPath: String
-    let releaseDate: Date
-    let overview: String
-    let vote: Double
+    let title: String?
+    let posterPath: String?
+    let releaseDate: Date?
+    let overview: String?
+    let vote: Double?
     
     var favorite: Bool = false {
         didSet {
@@ -43,19 +43,16 @@ final class Movie: Decodable {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
-        title = try values.decode(String.self, forKey: .title)
-        posterPath = try values.decode(String.self, forKey: .posterPath)
-        overview = try values.decode(String.self, forKey: .overview)
-        vote = try values.decode(Double.self, forKey: .vote)
+        title = try values.decode(String?.self, forKey: .title)
+        posterPath = try values.decode(String?.self, forKey: .posterPath)
+        overview = try values.decode(String?.self, forKey: .overview)
+        vote = try values.decode(Double?.self, forKey: .vote)
         
-        let releaseDateString = try values.decode(String.self, forKey: .releaseDate)
-        if let date = releaseDateString.toDate(.reverseDate) {
-            releaseDate = date
+        let releaseDateString = try values.decode(String?.self, forKey: .releaseDate)
+        if let date = releaseDateString {
+            releaseDate = date.toDate(.reverseDate)
         } else {
-            let errorMessage = "Can't convert String to Date for movie id: \(id)"
-            let errorContext = DecodingError.Context(codingPath: [CodingKeys.releaseDate], debugDescription: errorMessage)
-            DDLogError(errorMessage)
-            throw DecodingError.dataCorrupted(errorContext)
+            releaseDate = nil
         }
         
         self.checkFavoriteStatus()

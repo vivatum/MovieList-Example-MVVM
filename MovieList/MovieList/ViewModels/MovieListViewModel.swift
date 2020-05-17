@@ -9,19 +9,40 @@
 import Foundation
 import CocoaLumberjack
 
+protocol MovieViewModelDelegate: class {
+    func movieListUpdated()
+    func showMovieDetails(_ movie: Movie)
+    func errorHandling(_ error: ActionError?)
+}
+
 
 final class MovieListViewModel {
     
     weak var dataSource: MovieListDataSource?
     weak var movieService: MovieFetchProtocol?
-        
-    private var moviePlayNow = [Movie]()
-    private var movieSearch = [Movie]()
-    private var currentCollection: [Movie]
+    private weak var delegate: MovieViewModelDelegate?
     
-    var stopProgress: (() -> Void)?
-    var showMovieDetails: ((Movie) -> Void)?
-    var onErrorHandling: ((ActionError?) -> Void)?
+    private var playingNowList = MovieList()
+    private var searchResultsList = MovieList()
+    
+    
+    enum ViewState {
+        case playingNow
+        case searchResults
+    }
+    
+    // TODO: did set
+    var currentState: ViewState = .playingNow
+    
+    var currentList: MovieList {
+        switch self.currentState {
+        case .playingNow:
+            return self.playingNowList
+        case .searchResults:
+            return self.searchResultsList
+        }
+    }
+    
     
     var selectedIndexPath: IndexPath? {
         didSet {
@@ -32,11 +53,14 @@ final class MovieListViewModel {
         }
     }
     
-    init(dataSource: MovieListDataSource?, fetchService: MovieFetchProtocol = MovieFetchService.shared) {
-        self.currentCollection = moviePlayNow
+    init(dataSource: MovieListDataSource?,
+         fetchService: MovieFetchProtocol = MovieFetchService.shared,
+         delegate: MovieViewModelDelegate) {
         self.dataSource = dataSource
         self.movieService = fetchService
+        self.delegate = delegate
     }
+    
     
     // MARK: - Load Movie list
     
@@ -45,38 +69,41 @@ final class MovieListViewModel {
         guard let service = self.movieService else {
             let errorMessage = "Missing Movie service"
             DDLogError(errorMessage)
-            self.onErrorHandling?(.custom(errorMessage))
+            self.delegate?.errorHandling(.custom(errorMessage))
             return
         }
         
-        // TODO: page???
-        guard let requestUrl = URLFactory.moviePlayNowRequestURL(1) else {
+        guard currentList.page < currentList.totalPages else {
+            DDLogInfo("No more results for current list")
+            return
+        }
+        
+        let requestPage = currentList.page + 1
+        
+        guard let requestUrl = URLFactory.moviePlayNowRequestURL(requestPage) else {
             let errorMessage = "Can't get request URL"
             DDLogError(errorMessage)
-            self.onErrorHandling?(.custom(errorMessage))
+            self.delegate?.errorHandling(.custom(errorMessage))
             return
         }
         
         service.fetchMovieList(by: requestUrl) { result in
             switch result {
             case .success(let movieList):
-                self.stopProgress?()
-                self.moviePlayNow.append(contentsOf: movieList.results)
                 
-                // TODO: optimization??
-                self.currentCollection = self.moviePlayNow
-                self.dataSource?.data.value = self.currentCollection
+                self.currentList.page = movieList.page
+                self.currentList.totalPages = movieList.totalPages
+                self.currentList.results.append(contentsOf: movieList.results)
                 
-                
+                self.dataSource?.data = self.currentList.results
+                self.delegate?.movieListUpdated()
                 DDLogInfo("Movie List updated")
+                
             case .failure(let error):
-                self.onErrorHandling?(error)
+                self.delegate?.errorHandling(error)
             }
         }
-        
     }
     
-    
-    
-    
 }
+

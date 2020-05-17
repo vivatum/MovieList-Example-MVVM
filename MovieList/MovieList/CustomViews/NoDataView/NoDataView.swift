@@ -42,7 +42,7 @@ final class NoDataView: UIView {
         noDataView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         noDataView.backgroundColor = .white
         self.titleLabel.text = NoDataMessage.noMessage.message
-        self.titleLabel.textColor = .gray
+        self.titleLabel.textColor = AppColorScheme.noDataMessage
     }
 
 }
