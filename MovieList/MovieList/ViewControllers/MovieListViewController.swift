@@ -9,13 +9,14 @@
 import UIKit
 import CocoaLumberjack
 
-class MovieListViewController: UIViewController {
+final class MovieListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    
     private let activityIndicator = UIActivityIndicatorView()
     private var noDataView: NoDataView?
     private let navTitle = "movie.list.playing.now".localized
+    
+    private var resultSearchController: UISearchController? = nil
     
     enum SegueName: String {
         case movieDetails = "MovieDetailsSegue"
@@ -30,6 +31,19 @@ class MovieListViewController: UIViewController {
 
         self.title = self.navTitle
         self.setupTableView()
+        self.setupSearchController()
+        
+//        let searchBar = UISearchBar()
+//        searchBar.sizeToFit()
+//
+//        // the UIViewController comes with a navigationItem property
+//        // this will automatically be initialized for you if when the
+//        // view controller is added to a navigation controller's stack
+//        // you just need to set the titleView to be the search bar
+//        navigationItem.titleView = searchBar
+        
+        
+        
         self.updateMoviewCollection()
     }
     
@@ -44,6 +58,22 @@ class MovieListViewController: UIViewController {
         tableView.backgroundView = self.noDataView
         tableView.tableFooterView = UIView()
     }
+    
+    // MARK: - setup SearchController
+    
+    private func setupSearchController() {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self.viewModel
+//        searchController.obscuresBackgroundDuringPresentation = false
+//        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "movie.list.search".localized
+//        searchController.isActive = true
+        navigationItem.titleView = searchController.searchBar
+        definesPresentationContext = true
+        
+    }
+    
+    
     
     // MARK: - NoDataView Message
     // TODO: ???
@@ -66,7 +96,7 @@ class MovieListViewController: UIViewController {
     
     private func showTitleProgress() {
         DispatchQueue.main.async {
-            self.navigationItem.titleView = self.activityIndicator
+            //self.navigationItem.titleView = self.activityIndicator
             self.activityIndicator.startAnimating()
         }
     }
@@ -74,11 +104,12 @@ class MovieListViewController: UIViewController {
     private func hideTitleProgress() {
         DispatchQueue.main.async {
             self.activityIndicator.stopAnimating()
-            self.navigationItem.titleView = nil
+            //self.navigationItem.titleView = nil
             self.title = self.navTitle
         }
     }
 }
+
 
 extension MovieListViewController: MovieViewModelDelegate {
     

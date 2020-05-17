@@ -16,7 +16,7 @@ protocol MovieViewModelDelegate: class {
 }
 
 
-final class MovieListViewModel {
+final class MovieListViewModel: NSObject {
     
     weak var dataSource: MovieListDataSource?
     weak var movieService: MovieFetchProtocol?
@@ -108,3 +108,11 @@ final class MovieListViewModel {
     }
 }
 
+extension MovieListViewModel: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        print("Searching with: " + (searchController.searchBar.text ?? ""))
+//        guard let text = searchController.searchBar.text else { return }
+//        print(text)
+    }
+}

@@ -9,7 +9,7 @@
 import UIKit
 import CocoaLumberjack
 
-class MovieDetailsViewController: UIViewController {
+final class MovieDetailsViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var posterImageview: UIImageView!
