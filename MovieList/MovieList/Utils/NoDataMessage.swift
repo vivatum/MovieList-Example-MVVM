@@ -12,6 +12,8 @@ enum NoDataMessage {
     case noDataFetched
     case noMessage
     case loading
+    case emptySearch
+    case readyForSearch
     
     var message: String {
         switch self {
@@ -20,7 +22,11 @@ enum NoDataMessage {
         case .noMessage:
             return ""
         case .loading:
-            return "data.loading".localized
+            return "data.no.loading".localized
+        case .emptySearch:
+            return "data.no.empty.search".localized
+        case .readyForSearch:
+            return "data.no.ready.search".localized
         }
     }
 }

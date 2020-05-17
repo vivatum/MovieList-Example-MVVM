@@ -20,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bU4-qo-jEM">
-                    <rect key="frame" x="30" y="438" width="354" height="20.5"/>
+                    <rect key="frame" x="30" y="318" width="354" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -29,7 +29,7 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="bU4-qo-jEM" secondAttribute="trailing" constant="30" id="6yX-D2-jb6"/>
-                <constraint firstItem="bU4-qo-jEM" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="NBD-SF-qD7"/>
+                <constraint firstItem="bU4-qo-jEM" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-120" id="NBD-SF-qD7"/>
                 <constraint firstItem="bU4-qo-jEM" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="pl0-j8-OgU"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

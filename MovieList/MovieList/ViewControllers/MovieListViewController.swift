@@ -61,13 +61,6 @@ final class MovieListViewController: UIViewController {
     }
     
     
-    // MARK: - NoDataView Message
-    // TODO: ???
-    private func updtateNoDataMessage(_ isDataEmpty: Bool?) {
-        self.noDataView?.message = (isDataEmpty ?? true) ? .noDataFetched : .noMessage
-    }
-    
-    
     // MARK: - Update Movie collection
     
     private func updateMoviewCollection() {
@@ -100,9 +93,10 @@ final class MovieListViewController: UIViewController {
 
 extension MovieListViewController: MovieViewModelDelegate {
     
-    func movieListUpdated() {
+    func movieListUpdated(_ noDataMessage: NoDataMessage) {
         DispatchQueue.main.async {
 //            self.hideTitleProgress()
+            self.noDataView?.message = noDataMessage
             self.tableView.reloadData()
         }
     }
@@ -113,7 +107,7 @@ extension MovieListViewController: MovieViewModelDelegate {
         }
     }
     
-    func errorHandling(_ error: ActionError?) {
+    func errorHandling(_ error: ActionError?, _ noDataMessage: NoDataMessage) {
         DDLogError("Error: \(String(describing: error?.localizedDescription))")
         
         DispatchQueue.main.async {
@@ -124,10 +118,7 @@ extension MovieListViewController: MovieViewModelDelegate {
                 AlertHelper.showErrorAlert(err.alertContent)
             }
             
-            // TODO:
-//            if let viewData = self.dataSource.data.value {
-//                self?.updtateNoDataMessage(viewData.isEmpty)
-//            }
+            self.noDataView?.message = noDataMessage
         }
     }
     

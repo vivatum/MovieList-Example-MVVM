@@ -10,9 +10,9 @@ import Foundation
 import CocoaLumberjack
 
 protocol MovieViewModelDelegate: class {
-    func movieListUpdated()
+    func movieListUpdated(_ noDataMessage: NoDataMessage)
     func showMovieDetails(_ movie: Movie)
-    func errorHandling(_ error: ActionError?)
+    func errorHandling(_ error: ActionError?, _ noDataMessage: NoDataMessage)
 }
 
 
@@ -41,7 +41,7 @@ final class MovieListViewModel: NSObject {
         didSet {
             self.searchText = ""
             self.dataSource?.data = self.currentList.results
-            self.delegate?.movieListUpdated()
+            self.delegate?.movieListUpdated(self.getEmptyDataMessage())
         }
     }
     
@@ -91,7 +91,7 @@ final class MovieListViewModel: NSObject {
         guard let requestUrl = URLFactory.moviePlayNowRequestURL(requestPage) else {
             let errorMessage = "Can't get request URL"
             DDLogError(errorMessage)
-            self.delegate?.errorHandling(.custom(errorMessage))
+            self.delegate?.errorHandling(.custom(errorMessage), self.getEmptyDataMessage())
             return
         }
         
@@ -99,7 +99,7 @@ final class MovieListViewModel: NSObject {
     }
     
     private func fetchSearchResult() {
-       guard !self.searchText.isEmpty else { return }
+        guard !self.searchText.isEmpty else { return }
         
         guard currentList.page < currentList.totalPages else {
             DDLogInfo("No more results for current list")
@@ -111,7 +111,7 @@ final class MovieListViewModel: NSObject {
         guard let requestUrl = URLFactory.searchRequestURLWithPage(self.searchText, requestPage) else {
             let errorMessage = "Can't get request URL"
             DDLogError(errorMessage)
-            self.delegate?.errorHandling(.badRequest(errorMessage))
+            self.delegate?.errorHandling(.badRequest(errorMessage), self.getEmptyDataMessage())
             return
         }
         
@@ -121,10 +121,10 @@ final class MovieListViewModel: NSObject {
     
     private func updateCurrentCollection(with url: URL) {
         
-       guard let service = self.movieService else {
+        guard let service = self.movieService else {
             let errorMessage = "Missing Movie service"
             DDLogError(errorMessage)
-            self.delegate?.errorHandling(.custom(errorMessage))
+            self.delegate?.errorHandling(.custom(errorMessage), self.getEmptyDataMessage())
             return
         }
         
@@ -137,13 +137,13 @@ final class MovieListViewModel: NSObject {
                 self.currentList.results.append(contentsOf: movieList.results)
                 
                 self.dataSource?.data = self.currentList.results
-                self.delegate?.movieListUpdated()
+                self.delegate?.movieListUpdated(self.getEmptyDataMessage())
                 DDLogInfo("Movie List updated")
                 
             case .failure(let error):
                 switch error {
                 case .internet:
-                    self.delegate?.errorHandling(error)
+                    self.delegate?.errorHandling(error, self.getEmptyDataMessage())
                 default:
                     DDLogError("FetchMovieList errror: \(error)")
                 }
@@ -151,11 +151,41 @@ final class MovieListViewModel: NSObject {
         }
     }
     
+    // MARK: - Handle Selected Movie
+    
     private func handleSelectedIndexPath(_ indexPath: IndexPath?) {
         guard let selected = indexPath else { return }
         let movie = self.currentList.results[selected.row]
         self.delegate?.showMovieDetails(movie)
     }
+    
+    
+    // MARK: - NoDataView Message
+    
+    private func getEmptyDataMessage() -> NoDataMessage {
+        switch self.currentState {
+            
+        case .playingNow:
+            if self.playingNowList.results.isEmpty {
+                return .noDataFetched
+            }
+            else {
+                return .noMessage
+            }
+            
+        case .searchResults:
+            if self.searchResultsList.results.isEmpty && self.searchText.isEmpty {
+                return .readyForSearch
+            }
+            else if self.searchResultsList.results.isEmpty && !self.searchText.isEmpty {
+                return .emptySearch
+            }
+            else {
+                return .noMessage
+            }
+        }
+    }
+    
 }
 
 extension MovieListViewModel: UISearchResultsUpdating {

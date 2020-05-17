@@ -23,7 +23,9 @@
 // MARK: - No Data Messages
 
 "data.no.fetched" = "We couldn't fetch any Data now. \nTry again later please.";
-"data.loading" = "Loading...";
+"data.no.loading" = "Loading...";
+"data.no.empty.search" = "We couldn't fetch any Data by your Request. \nPlease change your Request.";
+"data.no.ready.search" = "Type your Request.";
 
 
 // MARK: - MovieList ViewController
