@@ -39,6 +39,7 @@ final class MovieListViewModel: NSObject {
     
     var currentState: ViewState = .playingNow {
         didSet {
+            self.searchText = ""
             self.dataSource?.data = self.currentList.results
             self.delegate?.movieListUpdated()
         }
@@ -179,7 +180,6 @@ extension MovieListViewModel: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, !text.isEmpty else { return }
-        print("### Search text: \(text)")
         self.searchText = text
     }
 }
@@ -188,14 +188,7 @@ extension MovieListViewModel: UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
         DispatchQueue.main.async {
-//            self.searchResults.removeAll()
-            
-//            searchController.searchResultsController?.view.isHidden = false
-            
-            
             searchController.searchBar.text = nil
-            
-            self.searchResultsList = MovieList()
             self.currentState = .searchResults
         }
     }
@@ -203,21 +196,13 @@ extension MovieListViewModel: UISearchControllerDelegate {
     func didPresentSearchController(_ searchController: UISearchController) {
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
-//            searchController.searchResultsController?.view.isHidden = false
         }
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        print("### Cancel")
-        
-        self.searchResultsList = MovieList()
-        self.searchText = ""
         self.currentState = .playingNow
-        
         DispatchQueue.main.async {
             searchController.searchBar.resignFirstResponder()
-//            searchController.searchResultsController?.view.isHidden = false
         }
-        
     }
 }
