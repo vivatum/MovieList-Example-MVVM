@@ -54,10 +54,14 @@ final class Movie: Decodable {
         overview = try values.decode(String?.self, forKey: .overview)
         vote = try values.decode(Double?.self, forKey: .vote)
         
-        let releaseDateString = try values.decode(String?.self, forKey: .releaseDate)
-        if let date = releaseDateString {
-            releaseDate = date.toDate(.reverseDate)
-        } else {
+        do {
+            let releaseDateString = try values.decode(String?.self, forKey: .releaseDate)
+            if let date = releaseDateString {
+                releaseDate = date.toDate(.reverseDate)
+            } else {
+                releaseDate = nil
+            }
+        } catch {
             releaseDate = nil
         }
         
@@ -65,7 +69,7 @@ final class Movie: Decodable {
     }
     
     
-    private func getFavoriteStatus() {
+    public func getFavoriteStatus() {
         FavoritesMovieService.shared.isMovieFavorite(id) { [weak self] result in
             switch result {
             case .success(let status):

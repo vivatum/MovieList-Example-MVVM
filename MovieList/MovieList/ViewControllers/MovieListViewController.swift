@@ -16,7 +16,7 @@ final class MovieListViewController: UIViewController {
     private var noDataView: NoDataView?
     private let navTitle = "movie.list.playing.now".localized
     
-    private var resultSearchController: UISearchController? = nil
+    private var searchController: UISearchController? = nil
     
     enum SegueName: String {
         case movieDetails = "MovieDetailsSegue"
@@ -32,18 +32,6 @@ final class MovieListViewController: UIViewController {
         self.title = self.navTitle
         self.setupTableView()
         self.setupSearchController()
-        
-//        let searchBar = UISearchBar()
-//        searchBar.sizeToFit()
-//
-//        // the UIViewController comes with a navigationItem property
-//        // this will automatically be initialized for you if when the
-//        // view controller is added to a navigation controller's stack
-//        // you just need to set the titleView to be the search bar
-//        navigationItem.titleView = searchBar
-        
-        
-        
         self.updateMoviewCollection()
     }
     
@@ -62,13 +50,14 @@ final class MovieListViewController: UIViewController {
     // MARK: - setup SearchController
     
     private func setupSearchController() {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self.viewModel
-//        searchController.obscuresBackgroundDuringPresentation = false
-//        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "movie.list.search".localized
+        searchController = UISearchController(searchResultsController: nil)
+        searchController?.searchResultsUpdater = self.viewModel
+        searchController?.delegate = self.viewModel
+        searchController?.obscuresBackgroundDuringPresentation = false
+        searchController?.hidesNavigationBarDuringPresentation = false
+        searchController?.searchBar.placeholder = "movie.list.search".localized
 //        searchController.isActive = true
-        navigationItem.titleView = searchController.searchBar
+        navigationItem.titleView = searchController?.searchBar
         definesPresentationContext = true
         
     }
@@ -109,6 +98,7 @@ final class MovieListViewController: UIViewController {
         }
     }
 }
+
 
 
 extension MovieListViewController: MovieViewModelDelegate {

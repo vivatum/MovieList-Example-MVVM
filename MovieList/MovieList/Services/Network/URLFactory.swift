@@ -39,6 +39,7 @@ struct URLFactory {
     static func searchRequestURL(_ searchText: String) -> URL? {
         let urlString = URLComponent.search.rawValue +
             URLComponent.apiKey.rawValue +
+            URLComponent.searchQuery.rawValue +
             searchText.searchQuery
         
         return URL(string: urlString)

@@ -44,14 +44,14 @@ final class MovieTableViewCell: UITableViewCell {
     }
     
     private func populateCellContent() {
-        guard let movie = self.movieData else { return }
-        movie.delegate = self
-        self.titleLabel.text = movie.title
-        if let data = movie.releaseDate {
+        self.movieData?.delegate = self
+        self.movieData?.getFavoriteStatus()
+        self.titleLabel.text = self.movieData?.title
+        if let data = self.movieData?.releaseDate {
             self.subtitleLabel.text = data.toString(format: .yearDate)
         }
 
-        self.posterImageView.setupImageByPath(movie.posterPath)
+        self.posterImageView.setupImageByPath(self.movieData?.posterPath)
         self.updateFavoriteButton()
     }
     
