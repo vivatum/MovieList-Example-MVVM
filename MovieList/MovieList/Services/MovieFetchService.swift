@@ -25,7 +25,7 @@ final class MovieFetchService: MovieRequestHandler, MovieFetchProtocol {
         guard Network.isReachable else {
             let errorMessage = "Can't load Data: Network unreachable!"
             DDLogError(errorMessage)
-            return completion(.failure(.network(errorMessage)))
+            return completion(.failure(.internet(errorMessage)))
         }
         
         self.cancelFetchMovie()

@@ -27,6 +27,12 @@ final class ImageLoader {
             return
         }
         
+        guard Network.isReachable else {
+            let errorMessage = "Can't load Data: Network unreachable!"
+            DDLogError(errorMessage)
+            return closure(.failure(.internet(errorMessage)))
+        }
+        
         let _ = RequestService().loadData(url: url) { result in
             switch result {
             case .success(let imageData):

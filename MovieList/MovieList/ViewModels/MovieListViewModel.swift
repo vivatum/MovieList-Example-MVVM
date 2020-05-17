@@ -28,7 +28,7 @@ final class MovieListViewModel: NSObject {
     private var searchText: String = "" {
         didSet {
             self.searchResultsList = MovieList()
-            self.searchMovie()
+            self.fetchSearchResult()
         }
     }
     
@@ -69,26 +69,18 @@ final class MovieListViewModel: NSObject {
     }
     
     
-    // MARK: - Load Movie list
+    // MARK: - Fetch Movie list
     
     public func fetchMovieList() {
         switch self.currentState {
         case .playingNow:
-            self.updateMovieList()
+            self.fetchPlayingNow()
         case .searchResults:
-            self.searchMovie()
+            self.fetchSearchResult()
         }
     }
     
-    private func updateMovieList() {
-        
-        guard let service = self.movieService else {
-            let errorMessage = "Missing Movie service"
-            DDLogError(errorMessage)
-            self.delegate?.errorHandling(.custom(errorMessage))
-            return
-        }
-        
+    private func fetchPlayingNow() {
         guard currentList.page < currentList.totalPages else {
             DDLogInfo("No more results for current list")
             return
@@ -103,42 +95,11 @@ final class MovieListViewModel: NSObject {
             return
         }
         
-        service.fetchMovieList(by: requestUrl) { result in
-            switch result {
-            case .success(let movieList):
-                
-                self.currentList.page = movieList.page
-                self.currentList.totalPages = movieList.totalPages
-                self.currentList.results.append(contentsOf: movieList.results)
-                
-                self.dataSource?.data = self.currentList.results
-                self.delegate?.movieListUpdated()
-                DDLogInfo("Movie List updated")
-                
-            case .failure(let error):
-                self.delegate?.errorHandling(error)
-            }
-        }
+        self.updateCurrentCollection(with: requestUrl)
     }
     
-    private func handleSelectedIndexPath(_ indexPath: IndexPath?) {
-        guard let selected = indexPath else { return }
-        let movie = self.currentList.results[selected.row]
-        self.delegate?.showMovieDetails(movie)
-    }
-    
-    // MARK: - Search Movie
-    
-    private func searchMovie() {
-        
-        guard !self.searchText.isEmpty else { return }
-        
-        guard let service = self.movieService else {
-            let errorMessage = "Missing Movie service"
-            DDLogError(errorMessage)
-            self.delegate?.errorHandling(.custom(errorMessage))
-            return
-        }
+    private func fetchSearchResult() {
+       guard !self.searchText.isEmpty else { return }
         
         guard currentList.page < currentList.totalPages else {
             DDLogInfo("No more results for current list")
@@ -147,14 +108,27 @@ final class MovieListViewModel: NSObject {
         
         let requestPage = currentList.page + 1
         
-        guard let requestUrl = URLFactory.searchRequestURLWithPage(searchText, requestPage) else {
+        guard let requestUrl = URLFactory.searchRequestURLWithPage(self.searchText, requestPage) else {
             let errorMessage = "Can't get request URL"
+            DDLogError(errorMessage)
+            self.delegate?.errorHandling(.badRequest(errorMessage))
+            return
+        }
+        
+        self.updateCurrentCollection(with: requestUrl)
+    }
+    
+    
+    private func updateCurrentCollection(with url: URL) {
+        
+       guard let service = self.movieService else {
+            let errorMessage = "Missing Movie service"
             DDLogError(errorMessage)
             self.delegate?.errorHandling(.custom(errorMessage))
             return
         }
-                
-        service.fetchMovieList(by: requestUrl) { result in
+        
+        service.fetchMovieList(by: url) { result in
             switch result {
             case .success(let movieList):
                 
@@ -162,17 +136,25 @@ final class MovieListViewModel: NSObject {
                 self.currentList.totalPages = movieList.totalPages
                 self.currentList.results.append(contentsOf: movieList.results)
                 
-                print("### SEARCH page: \(self.currentList.page)")
-                print("### SEARCH pages: \(self.currentList.totalPages)")
-                
                 self.dataSource?.data = self.currentList.results
                 self.delegate?.movieListUpdated()
                 DDLogInfo("Movie List updated")
                 
             case .failure(let error):
-                DDLogInfo("SEARCH errror: \(error)")
+                switch error {
+                case .internet:
+                    self.delegate?.errorHandling(error)
+                default:
+                    DDLogError("FetchMovieList errror: \(error)")
+                }
             }
         }
+    }
+    
+    private func handleSelectedIndexPath(_ indexPath: IndexPath?) {
+        guard let selected = indexPath else { return }
+        let movie = self.currentList.results[selected.row]
+        self.delegate?.showMovieDetails(movie)
     }
 }
 

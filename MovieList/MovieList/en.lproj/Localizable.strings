@@ -16,6 +16,9 @@
 "error.fetching.data.title" = "Fetching Data Error";
 "error.fetching.data.message" = "Please try again later.";
 
+"error.bad.request.title" = "Bad Request";
+"error.bad.request.message" = "Please change your request.";
+
 
 // MARK: - No Data Messages
 
