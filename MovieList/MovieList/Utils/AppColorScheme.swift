@@ -11,5 +11,7 @@ import UIKit
 struct AppColorScheme {
     static let movieTitle = UIColor(red: (66/255.0), green: (66/255.0), blue: (66/255.0), alpha: 1)
     static let movieSubtitle = UIColor.darkGray
+    static let movieTitleLight = UIColor.lightGray
+    
     static let noDataMessage = UIColor.gray
 }

@@ -114,6 +114,22 @@ extension MovieListViewController: MovieViewModelDelegate {
     }
     
     
+    // MARK: - Segues
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == SegueName.movieDetails.rawValue {
+            
+            guard let movie = sender as? Movie else {
+                DDLogError("Can't get Movie from sender")
+                return
+            }
+            
+            if let controller = segue.destination as? MovieDetailsViewController {
+                controller.movieData = movie
+                DDLogInfo("Go to MovieDetailsViewController")
+            }
+        }
+    }
 }
 
 extension MovieListViewController: UITableViewDelegate {

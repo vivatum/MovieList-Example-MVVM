@@ -55,11 +55,11 @@ final class Movie: Decodable {
             releaseDate = nil
         }
         
-        self.checkFavoriteStatus()
+        self.getFavoriteStatus()
     }
     
     
-    private func checkFavoriteStatus() {
+    private func getFavoriteStatus() {
         FavoritesMovieService.shared.isMovieFavorite(id) { [weak self] result in
             switch result {
             case .success(let status):

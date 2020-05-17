@@ -43,13 +43,9 @@ final class MovieListViewModel {
         }
     }
     
-    
     var selectedIndexPath: IndexPath? {
         didSet {
-            //               if let selectedRecord = getRecordByIndexPath(selectedIndexPath),
-            //                   let details = getRecordDetails(selectedRecord) {
-            //                   self.showRecordDetails?(details)
-            //               }
+            self.handleSelectedIndexPath(selectedIndexPath)
         }
     }
     
@@ -105,5 +101,10 @@ final class MovieListViewModel {
         }
     }
     
+    private func handleSelectedIndexPath(_ indexPath: IndexPath?) {
+        guard let selected = indexPath else { return }
+        let movie = self.currentList.results[selected.row]
+        self.delegate?.showMovieDetails(movie)
+    }
 }
 

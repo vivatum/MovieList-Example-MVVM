@@ -30,6 +30,7 @@
 		5A963C14246F357D009AAC02 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A963C13246F357D009AAC02 /* MovieTableViewCell.swift */; };
 		5A963C16246F35BC009AAC02 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A963C15246F35BC009AAC02 /* MovieListViewController.swift */; };
 		5A963C18246F35CD009AAC02 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A963C17246F35CD009AAC02 /* MovieDetailsViewController.swift */; };
+		5AB0B87E24719C5B0043A72E /* UIImgeViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB0B87D24719C5B0043A72E /* UIImgeViewExtension.swift */; };
 		5AC35CA7246F28BD007FF701 /* LogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC35CA6246F28BD007FF701 /* LogFormatter.swift */; };
 		5AC35CA9246F28F1007FF701 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC35CA8246F28F1007FF701 /* Network.swift */; };
 		5AC35CAB246F2916007FF701 /* ActionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC35CAA246F2916007FF701 /* ActionError.swift */; };
@@ -71,6 +72,7 @@
 		5A963C13246F357D009AAC02 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		5A963C15246F35BC009AAC02 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		5A963C17246F35CD009AAC02 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
+		5AB0B87D24719C5B0043A72E /* UIImgeViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImgeViewExtension.swift; sourceTree = "<group>"; };
 		5AC35CA6246F28BD007FF701 /* LogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFormatter.swift; sourceTree = "<group>"; };
 		5AC35CA8246F28F1007FF701 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		5AC35CAA246F2916007FF701 /* ActionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionError.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				5AC35CB3246F2A25007FF701 /* DateExtension.swift */,
 				5AC35CBA246F2D1E007FF701 /* StringExtension.swift */,
 				5A2AE93024705C54007AF36C /* UIViewExtension.swift */,
+				5AB0B87D24719C5B0043A72E /* UIImgeViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 				5AC35CBB246F2D1E007FF701 /* StringExtension.swift in Sources */,
 				5AC35CA9246F28F1007FF701 /* Network.swift in Sources */,
 				5A2FDC2C246FF7CB0010AE1F /* URLFactory.swift in Sources */,
+				5AB0B87E24719C5B0043A72E /* UIImgeViewExtension.swift in Sources */,
 				5A2FDC3A247012EF0010AE1F /* MovieList.swift in Sources */,
 				5A2AE92F2470559B007AF36C /* AppColorScheme.swift in Sources */,
 				5A2FDC3C2470145C0010AE1F /* FavoritesMovieService.swift in Sources */,

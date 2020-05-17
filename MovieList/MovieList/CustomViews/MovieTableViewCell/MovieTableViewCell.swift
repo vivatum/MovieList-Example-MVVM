@@ -50,43 +50,9 @@ final class MovieTableViewCell: UITableViewCell {
         if let data = movie.releaseDate {
             self.subtitleLabel.text = data.toString(format: .yearDate)
         }
-        self.populatePosterImage(with: movie.posterPath)
+
+        self.posterImageView.setupImageByPath(movie.posterPath)
         self.updateFavoriteButton()
-    }
-    
-    private func populatePosterImage(with path: String?) {
-        
-        guard let pathString = path else {
-            DDLogError("Can't get poster Path")
-            self.setupPosterPlaceholder()
-            return
-        }
-        
-        guard let url = URLFactory.posterRequestURL(pathString) else {
-            DDLogError("Can't get poster URL")
-            self.setupPosterPlaceholder()
-            return
-        }
-        
-        ImageLoader.shared.getImageData(url) { result in
-            switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self.posterImageView?.image = UIImage(data: data)
-                }
-            case .failure(let error):
-                self.setupPosterPlaceholder()
-                DDLogError("Can't get contact image data: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    private func setupPosterPlaceholder() {
-        DispatchQueue.main.async {
-            if let placeholderImage = UIImage(named: "posterPlaceholder") {
-                self.posterImageView?.image = placeholderImage
-            }
-        }
     }
     
     private func updateFavoriteButton() {

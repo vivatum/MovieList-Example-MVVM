@@ -23,6 +23,16 @@
 "data.loading" = "Loading...";
 
 
-// MARK: - ViewController Titles
+// MARK: - MovieList ViewController
 
 "movie.list.playing.now" = "Playing now";
+"movie.list.search" = "Search";
+
+
+// MARK: - MovieDetails ViewController
+
+"details.nav.titile" = "Movie";
+"rating.title.label" = "Rating";
+"release.titile.label" = "Release Date";
+
+
