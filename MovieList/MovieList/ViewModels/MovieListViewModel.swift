@@ -22,7 +22,7 @@ final class MovieListViewModel: NSObject {
     weak var movieService: MovieFetchProtocol?
     private weak var delegate: MovieViewModelDelegate?
     
-    private var playingNowList = MovieList()
+    private var defaultMoviesList = MovieList()
     private var searchResultsList = MovieList()
     
     private var searchText: String = "" {
@@ -33,11 +33,11 @@ final class MovieListViewModel: NSObject {
     }
     
     enum ViewState {
-        case playingNow
+        case defaultList
         case searchResults
     }
     
-    var currentState: ViewState = .playingNow {
+    private var currentState: ViewState = .defaultList {
         didSet {
             self.searchText = ""
             self.dataSource?.data = self.currentList.results
@@ -47,8 +47,8 @@ final class MovieListViewModel: NSObject {
     
     var currentList: MovieList {
         switch self.currentState {
-        case .playingNow:
-            return self.playingNowList
+        case .defaultList:
+            return self.defaultMoviesList
         case .searchResults:
             return self.searchResultsList
         }
@@ -73,7 +73,7 @@ final class MovieListViewModel: NSObject {
     
     public func fetchMovieList() {
         switch self.currentState {
-        case .playingNow:
+        case .defaultList:
             self.fetchPlayingNow()
         case .searchResults:
             self.fetchSearchResult()
@@ -171,8 +171,8 @@ final class MovieListViewModel: NSObject {
     private func getEmptyDataMessage() -> NoDataMessage {
         switch self.currentState {
             
-        case .playingNow:
-            if self.playingNowList.results.isEmpty {
+        case .defaultList:
+            if self.defaultMoviesList.results.isEmpty {
                 return .noDataFetched
             }
             else {
@@ -218,7 +218,7 @@ extension MovieListViewModel: UISearchControllerDelegate {
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        self.currentState = .playingNow
+        self.currentState = .defaultList
         DispatchQueue.main.async {
             searchController.searchBar.resignFirstResponder()
         }

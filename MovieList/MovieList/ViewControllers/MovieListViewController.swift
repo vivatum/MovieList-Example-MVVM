@@ -174,6 +174,6 @@ extension MovieListViewController: UITableViewDataSourcePrefetching {
     }
     
     private func isLoadingCell(for indexPath: IndexPath) -> Bool {
-        return indexPath.row >= (viewModel.currentList.results.count - 1)
+        return indexPath.row >= (self.viewModel.currentList.results.count - 1)
     }
 }
