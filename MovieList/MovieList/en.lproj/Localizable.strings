@@ -30,7 +30,7 @@
 
 // MARK: - MovieList ViewController
 
-"movie.list.playing.now" = "Playing now";
+"movie.list.title" = "Movie List";
 "movie.list.search" = "Search movie";
 
 
