@@ -44,6 +44,7 @@ final class MovieListViewController: UIViewController {
         tableView.delegate = self
         tableView.prefetchDataSource = self
         tableView.backgroundView = self.noDataView
+        tableView.keyboardDismissMode = .interactive
         tableView.tableFooterView = UIView()
     }
     

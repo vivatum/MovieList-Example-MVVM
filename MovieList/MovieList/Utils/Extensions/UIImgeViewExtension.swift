@@ -15,7 +15,6 @@ extension UIImageView {
     func setupImageByPath(_ path: String?) {
         
         guard let pathString = path else {
-            DDLogError("Can't get poster Path")
             self.setupPosterPlaceholder()
             return
         }

@@ -81,6 +81,7 @@ final class MovieListViewModel: NSObject {
     }
     
     private func fetchPlayingNow() {
+        
         guard currentList.page < currentList.totalPages else {
             DDLogInfo("No more results for current list")
             return
@@ -99,7 +100,12 @@ final class MovieListViewModel: NSObject {
     }
     
     private func fetchSearchResult() {
-        guard !self.searchText.isEmpty else { return }
+        
+        guard !self.searchText.isEmpty else {
+            self.dataSource?.data = self.currentList.results
+            self.delegate?.movieListUpdated(self.getEmptyDataMessage())
+            return
+        }
         
         guard currentList.page < currentList.totalPages else {
             DDLogInfo("No more results for current list")
@@ -191,7 +197,7 @@ final class MovieListViewModel: NSObject {
 extension MovieListViewModel: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text, !text.isEmpty else { return }
+        guard let text = searchController.searchBar.text else { return }
         self.searchText = text
     }
 }

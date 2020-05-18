@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5A2AE92F2470559B007AF36C /* AppColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2AE92E2470559B007AF36C /* AppColorScheme.swift */; };
-		5A2AE93124705C54007AF36C /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2AE93024705C54007AF36C /* UIViewExtension.swift */; };
 		5A2C3EDF246F20C700F1983E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C3EDE246F20C700F1983E /* AppDelegate.swift */; };
 		5A2C3EE6246F20C700F1983E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A2C3EE4246F20C700F1983E /* Main.storyboard */; };
 		5A2C3EE8246F20C900F1983E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A2C3EE7246F20C900F1983E /* Assets.xcassets */; };
@@ -48,7 +47,6 @@
 /* Begin PBXFileReference section */
 		275510B7D12DE10FC525DD89 /* Pods-MovieList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieList.release.xcconfig"; path = "Target Support Files/Pods-MovieList/Pods-MovieList.release.xcconfig"; sourceTree = "<group>"; };
 		5A2AE92E2470559B007AF36C /* AppColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorScheme.swift; sourceTree = "<group>"; };
-		5A2AE93024705C54007AF36C /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		5A2C3EDB246F20C700F1983E /* MovieList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2C3EDE246F20C700F1983E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5A2C3EE5246F20C700F1983E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -250,7 +248,6 @@
 				5AC35CB1246F29B0007FF701 /* UIApplicationExtension.swift */,
 				5AC35CB3246F2A25007FF701 /* DateExtension.swift */,
 				5AC35CBA246F2D1E007FF701 /* StringExtension.swift */,
-				5A2AE93024705C54007AF36C /* UIViewExtension.swift */,
 				5AB0B87D24719C5B0043A72E /* UIImgeViewExtension.swift */,
 			);
 			path = Extensions;
@@ -409,7 +406,6 @@
 				5A2FDC2A246FF7540010AE1F /* RequestService.swift in Sources */,
 				5AC35CB0246F2974007FF701 /* AlertHelper.swift in Sources */,
 				5A2FDC3E247014D80010AE1F /* FavoriteMovie.swift in Sources */,
-				5A2AE93124705C54007AF36C /* UIViewExtension.swift in Sources */,
 				5AC35CAE246F2953007FF701 /* AlertMessage.swift in Sources */,
 				5AFD0ED924706D9D00D87350 /* MovieListDataSource.swift in Sources */,
 				5A2FDC3424700DB50010AE1F /* ImageLoader.swift in Sources */,
