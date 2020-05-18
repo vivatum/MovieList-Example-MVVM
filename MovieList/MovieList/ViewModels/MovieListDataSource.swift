@@ -26,7 +26,6 @@ final class MovieListDataSource: NSObject, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // TODO: cell id!!!
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.movie, for: indexPath) as? MovieTableViewCell else {
             return UITableViewCell()
         }

@@ -33,7 +33,7 @@ extension UIImageView {
                 }
             case .failure(let error):
                 self.setupPosterPlaceholder()
-                DDLogError("Can't get contact image data: \(error.localizedDescription)")
+                DDLogError("Can't get image data: \(error.localizedDescription)")
             }
         }
     }
