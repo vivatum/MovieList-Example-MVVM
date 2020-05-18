@@ -11,7 +11,6 @@ import CocoaLumberjack
 
 final class MovieDetailsViewController: UIViewController {
     
-    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var posterImageview: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -49,9 +48,9 @@ final class MovieDetailsViewController: UIViewController {
     private func setupLabels() {
         self.titleLabel.textColor = AppColorScheme.movieTitle
         
-        self.ratingTitleLabel.textColor = AppColorScheme.movieTitleLight
+        self.ratingTitleLabel.textColor = AppColorScheme.movieTitle
         self.ratingTitleLabel.text = "rating.title.label".localized
-        self.releaseTitileLabel.textColor = AppColorScheme.movieTitleLight
+        self.releaseTitileLabel.textColor = AppColorScheme.movieTitle
         self.releaseTitileLabel.text = "release.titile.label".localized
         
         self.ratingValueLabel.textColor = AppColorScheme.movieSubtitle
@@ -74,6 +73,7 @@ final class MovieDetailsViewController: UIViewController {
         
         if let title = movie.title {
             self.titleLabel.text = title
+            self.title = title
         }
         
         self.posterImageview.setupImageByPath(movie.posterPath)
